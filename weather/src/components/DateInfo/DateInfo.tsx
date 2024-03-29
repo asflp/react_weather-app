@@ -7,7 +7,12 @@ interface DateInfoProps {
     date: string;
 }
 
-export const DateInfo: React.FC<DateInfoProps> = ({ city, time, weekDay, date }) => {
+export const DateInfo: React.FC<DateInfoProps> = ({
+    city,
+    time,
+    weekDay,
+    date,
+}) => {
     return (
         <div className={'container_date'}>
             <div className={'today_label__first'}>{city}</div>

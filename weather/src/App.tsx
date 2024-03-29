@@ -22,18 +22,22 @@ function App() {
     const [weather, setWeather] = useState<ResponseWeather>();
 
     const getHourlyWeather = async (): Promise<void> => {
-        return fetch(`https://weatherapi-com.p.rapidapi.com/forecast.json?q=${selectedCity.latitude},${selectedCity.longitude}&days=3`, {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': 'fcc1d1d0b0mshfe809544f193715p14e89cjsnc80d69fcc87d',
-                'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
-            },
-        })
+        return fetch(
+            `https://weatherapi-com.p.rapidapi.com/forecast.json?q=${selectedCity.latitude},${selectedCity.longitude}&days=3`,
+            {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key':
+                        'fcc1d1d0b0mshfe809544f193715p14e89cjsnc80d69fcc87d',
+                    'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
+                },
+            }
+        )
             .then((response) => response.json())
             .then((response) => {
                 setWeather(response as ResponseWeather);
             })
-            .catch(error => console.log(error));
+            .catch((error) => console.log(error));
     };
 
     useEffect(() => {
@@ -48,19 +52,28 @@ function App() {
     }, []);
 
     const changeCity = (name: string, latitude: number, longitude: number) => {
-        setSelectedCity({ name: name, latitude: latitude, longitude: longitude });
+        setSelectedCity({
+            name: name,
+            latitude: latitude,
+            longitude: longitude,
+        });
         getHourlyWeather();
     };
 
     return (
-        <div className='container_app'>
+        <div className="container_app">
             <Header changeCity={changeCity} />
             <div className={'container_app__first'}>
-                <DateInfo city={selectedCity.name}
-                          date={`${dateState.getDate()} ${monthNames[dateState.getMonth()]}`}
-                          weekDay={weekdayNames[dateState.getDay()]}
-                          time={`${dateState.getHours()}:${dateState.getMinutes().toString().length === 1
-                              ? '0' + dateState.getMinutes() : dateState.getMinutes()}`} />
+                <DateInfo
+                    city={selectedCity.name}
+                    date={`${dateState.getDate()} ${monthNames[dateState.getMonth()]}`}
+                    weekDay={weekdayNames[dateState.getDay()]}
+                    time={`${dateState.getHours()}:${
+                        dateState.getMinutes().toString().length === 1
+                            ? '0' + dateState.getMinutes()
+                            : dateState.getMinutes()
+                    }`}
+                />
                 <TodayInfo weather={weather} />
             </div>
             <div className={'container_app__first'}>

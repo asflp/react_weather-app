@@ -2,8 +2,8 @@ interface ResponseCity {
     data: [ResponseCityItem];
     links: [ResponseCityLink];
     metadata: {
-        currentOffset: number
-        totalCount: number
+        currentOffset: number;
+        totalCount: number;
     };
 }
 
