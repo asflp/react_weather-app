@@ -5,7 +5,7 @@ interface WeatherIconsProps {
     width: number;
 }
 
-export const WeatherIcons: FC<WeatherIconsProps> = ({ id, width }) => {
+export const Icon: FC<WeatherIconsProps> = ({ id, width }) => {
     switch (id) {
         case 'cloudy':
             return (

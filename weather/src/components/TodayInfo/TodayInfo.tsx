@@ -1,5 +1,5 @@
 import './TodayInfo.css';
-import { WeatherIcons } from '../../Icons/WeatherIcons.tsx';
+import { Icon } from '../../icons/Icon.tsx';
 // @ts-ignore
 import sunriseImg from '../../assets/sunrise.png';
 // @ts-ignore
@@ -13,23 +13,24 @@ import pressureImg from '../../assets/pressure.png';
 // @ts-ignore
 import uvImg from '../../assets/uv.png';
 import { conditionsWeather } from '../../Dictionaries.ts';
+import { ResponseWeather } from '../../App.tsx';
 
-interface TodayInfoProps {
+interface Props {
     weather?: ResponseWeather;
 }
 
-export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
+export const TodayInfo= (props: Props) => {
     return (
         <div className={'container_today'}>
             <div className={'container_today__first'}>
                 <div className={'today_temperature'}>
-                    <div className={'today_temperature__degrees'}>{weather?.current.temp_c
-                        ? weather.current.temp_c : '-'}°C
+                    <div className={'today_temperature__degrees'}>{props.weather?.current.temp_c
+                        ? props.weather.current.temp_c : '-'}°C
                     </div>
 
                     <div className={'today_temperature__feels'}>
                         Ощущается как:
-                        <div>{weather?.current.feelslike_c ? weather.current.feelslike_c : '-'}°C</div>
+                        <div>{props.weather?.current.feelslike_c ? props.weather.current.feelslike_c : '-'}°C</div>
                     </div>
                 </div>
 
@@ -39,8 +40,8 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
 
                         <div>
                             Восход
-                            <div>{weather?.forecast.forecastday[0].astro.sunrise
-                                ? weather.forecast.forecastday[0].astro.sunrise : '--:--'}</div>
+                            <div>{props.weather?.forecast.forecastday[0].astro.sunrise
+                                ? props.weather.forecast.forecastday[0].astro.sunrise : '--:--'}</div>
                         </div>
                     </div>
 
@@ -48,18 +49,18 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
                         <img src={sunsetImg} />
                         <div>
                             Заход
-                            <div>{weather?.forecast.forecastday[0].astro.sunset
-                                ? weather.forecast.forecastday[0].astro.sunset : '--:--'}</div>
+                            <div>{props.weather?.forecast.forecastday[0].astro.sunset
+                                ? props.weather.forecast.forecastday[0].astro.sunset : '--:--'}</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div className={'container_today__second'}>
-                <WeatherIcons
-                    id={weather?.current.condition.text && conditionsWeather.has(weather.current.condition.text)
-                        ? conditionsWeather.get(weather.current.condition.text)! : 'sunny'} width={170} />
-                {weather?.current.condition.text ? weather.current.condition.text : ' Нет информации'}
+                <Icon
+                    id={props.weather?.current.condition.text && conditionsWeather.has(props.weather.current.condition.text)
+                        ? conditionsWeather.get(props.weather.current.condition.text)! : 'sunny'} width={170} />
+                {props.weather?.current.condition.text ? props.weather.current.condition.text : ' Нет информации'}
             </div>
 
             <div className={'container_today__third'}>
@@ -67,7 +68,7 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
                     <div className={'today_factors__item'}>
                         <img src={humidityImg} className={'today_factors__item'} />
                         <div className={'today_factors__item__first'}>
-                            {weather?.current.humidity ? weather.current.humidity : '-'}%
+                            {props.weather?.current.humidity ? props.weather.current.humidity : '-'}%
                         </div>
                         <div className={'today_factors__item__second'}>Влажность</div>
                     </div>
@@ -75,7 +76,7 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
                     <div className={'today_factors__item'}>
                         <img src={windImg} className={'today_factors__item'} />
                         <div className={'today_factors__item__first'}>
-                            {weather?.current.wind_kph ? weather.current.wind_kph : '-'}км/ч
+                            {props.weather?.current.wind_kph ? props.weather.current.wind_kph : '-'}км/ч
                         </div>
                         <div className={'today_factors__item__second'}>Скорость ветра</div>
                     </div>
@@ -85,7 +86,7 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
                     <div className={'today_factors__item'}>
                         <img src={pressureImg} className={'today_factors__item'} />
                         <div className={'today_factors__item__first'}>
-                            {weather?.current.pressure_in ? weather.current.pressure_in : '-'}ГПа
+                            {props.weather?.current.pressure_in ? props.weather.current.pressure_in : '-'}ГПа
                         </div>
                         <div className={'today_factors__item__second'}>Давление</div>
                     </div>
@@ -93,7 +94,7 @@ export const TodayInfo: React.FC<TodayInfoProps> = ({ weather }) => {
                     <div className={'today_factors__item'}>
                         <img src={uvImg} className={'today_factors__item'} />
                         <div className={'today_factors__item__first'}>
-                            {weather?.current.uv ? weather.current.uv : '-'}
+                            {props.weather?.current.uv ? props.weather.current.uv : '-'}
                         </div>
                         <div className={'today_factors__item__second'}>UV</div>
                     </div>

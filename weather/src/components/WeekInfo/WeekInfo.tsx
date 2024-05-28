@@ -4,43 +4,44 @@ import {
     monthNames,
     weekdayNames,
 } from '../../Dictionaries.ts';
-import { WeatherIcons } from '../../Icons/WeatherIcons.tsx';
+import { Icon } from '../../icons/Icon.tsx';
+import { ResponseWeather } from '../../App.tsx';
 
-interface WeekInfoProps {
+interface Props {
     date: Date;
     weather?: ResponseWeather;
 }
 
-export const WeekInfo: React.FC<WeekInfoProps> = ({ date, weather }) => {
-    const getDate = (index: number) => {
+export const WeekInfo = (props: Props) => {
+    const getDate = (index: number): string => {
         const localData = new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate() + index
+            props.date.getFullYear(),
+            props.date.getMonth(),
+            props.date.getDate() + index
         );
         return `${weekdayNames[localData.getDay()]}, ${localData.getDate()} ${monthNames[localData.getMonth()]}`;
     };
 
     const getWeatherIcon = (index: number): string => {
         if (
-            weather == undefined ||
+            props.weather == undefined ||
             !conditionsWeather.has(
-                weather.forecast.forecastday[index].day.condition.text
+                props.weather.forecast.forecastday[index].day.condition.text
             )
         ) {
             return 'sunny';
         }
 
         return conditionsWeather.get(
-            weather!.forecast.forecastday[index].day.condition.text
+            props.weather!.forecast.forecastday[index].day.condition.text
         )!;
     };
 
-    const getWeather = (index: number) => {
-        if (weather == undefined) {
+    const getWeather = (index: number): string => {
+        if (props.weather == undefined) {
             return '-°C/-°C';
         }
-        return `${weather!.forecast.forecastday[index].day.mintemp_c}°C/${weather!.forecast.forecastday[index].day.maxtemp_c}°C`;
+        return `${props.weather!.forecast.forecastday[index].day.mintemp_c}°C/${props.weather!.forecast.forecastday[index].day.maxtemp_c}°C`;
     };
 
     return (
@@ -50,7 +51,7 @@ export const WeekInfo: React.FC<WeekInfoProps> = ({ date, weather }) => {
             <div className={'week_info'}>
                 {[0, 1, 2].map((item) => (
                     <div className={'week_info__item'} key={item}>
-                        <WeatherIcons id={getWeatherIcon(item)} width={50} />
+                        <Icon id={getWeatherIcon(item)} width={50} />
                         <div className={'week_info__item__degrees'}>
                             {getWeather(item)}
                         </div>

@@ -1,25 +1,70 @@
 import './App.css';
-import { Header } from './components/Header/Header.tsx';
-import { DateInfo } from './components/DateInfo/DateInfo.tsx';
-import { TodayInfo } from './components/TodayInfo/TodayInfo.tsx';
-import { WeekInfo } from './components/WeekInfo/WeekInfo.tsx';
-import { HourlyInfo } from './components/HourlyInfo/HourlyInfo.tsx';
+import { Header, WeekInfo, TodayInfo, DateInfo, HourlyInfo } from './components';
 import { useEffect, useState } from 'react';
 import { monthNames, weekdayNames } from './Dictionaries.ts';
 
-const City = {
-    name: 'Kazan',
-    latitude: 55.78874,
-    longitude: 49.12214,
-};
+export type City = {
+    name: string;
+    latitude: number;
+    longitude: number;
+}
+
+export type ResponseWeather = {
+    current: {
+        temp_c: number;
+        condition: {
+            text: string;
+        };
+        wind_kph: number;
+        pressure_in: number;
+        humidity: number;
+        feelslike_c: number;
+        uv: number;
+    };
+    forecast: {
+        forecastday: [ResponseWeatherItem];
+    };
+}
+
+type ResponseWeatherItem = {
+    date: string;
+    day: {
+        maxtemp_c: number;
+        mintemp_c: number;
+        condition: {
+            text: string;
+        };
+    };
+    astro: {
+        sunrise: string;
+        sunset: string;
+    };
+    hour: [ResponseWeatherHour];
+}
+
+type ResponseWeatherHour = {
+    time: string;
+    temp_c: number;
+    condition: {
+        text: string;
+    };
+    wind_kph: number;
+    wind_degree: number;
+}
 
 function App() {
-    const [selectedCity, setSelectedCity] = useState(City);
-    const [dateState, setDateState] = useState(new Date());
+    const CityState: City = {
+        name: 'Kazan',
+        latitude: 55.78874,
+        longitude: 49.12214,
+    };
+    
+    const [selectedCity, setSelectedCity] = useState<City>(CityState);
+    const [dateState, setDateState] = useState<Date>(new Date());
     useEffect(() => {
         setInterval(() => setDateState(new Date()), 30000);
     }, []);
-    const [weather, setWeather] = useState<ResponseWeather>();
+    const [weather, setWeather] = useState<ResponseWeather | undefined>();
 
     const getHourlyWeather = async (): Promise<void> => {
         return fetch(
@@ -34,8 +79,8 @@ function App() {
             }
         )
             .then((response) => response.json())
-            .then((response) => {
-                setWeather(response as ResponseWeather);
+            .then((response: ResponseWeather) => {
+                setWeather(response);
             })
             .catch((error) => console.log(error));
     };
@@ -51,11 +96,11 @@ function App() {
         };
     }, []);
 
-    const changeCity = (name: string, latitude: number, longitude: number) => {
+    const changeCity = (city: City) => {
         setSelectedCity({
-            name: name,
-            latitude: latitude,
-            longitude: longitude,
+            name: city.name,
+            latitude: city.latitude,
+            longitude: city.longitude,
         });
         getHourlyWeather();
     };

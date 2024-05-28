@@ -1,13 +1,43 @@
 import './Header.css';
-import { ChangeEvent, FC, useState } from 'react';
-const defaultInput = '';
+import { ChangeEvent, useState } from 'react';
+import { City } from '../../App.tsx';
 
-interface HeaderProps {
-    changeCity: (name: string, latitude: number, longitude: number) => void;
+type ResponseCity = {
+    data: [ResponseCityItem];
+    links: [ResponseCityLink];
+    metadata: {
+        currentOffset: number;
+        totalCount: number;
+    };
 }
 
-export const Header: FC<HeaderProps> = ({ changeCity }) => {
-    const [input, setInput] = useState(defaultInput);
+type ResponseCityItem = {
+    id: bigint;
+    wikiDataId: string;
+    type: string;
+    city: string;
+    name: string;
+    country: string;
+    countryCode: string;
+    region: string;
+    regionCode: string;
+    regionWdId: string;
+    latitude: number;
+    longitude: number;
+    population: bigint;
+}
+
+type ResponseCityLink = {
+    rel: string;
+    href: string;
+}
+
+interface Props {
+    changeCity: (city: City) => void;
+}
+
+export const Header = (props: Props) => {
+    const [input, setInput] = useState<string>("");
     const [searchResult, setSearchResult] = useState<ResponseCity>();
 
     const onClickButton = async (): Promise<void> => {
@@ -23,15 +53,16 @@ export const Header: FC<HeaderProps> = ({ changeCity }) => {
             }
         )
             .then((response) => response.json())
-            .then((response) => {
-                setSearchResult(response as ResponseCity);
+            .then((response: ResponseCity) => {
+                setSearchResult(response);
             })
             .catch((error) => console.log(error));
     };
 
     const onClickElement = (item: ResponseCityItem) => {
-        changeCity(item.name, item.latitude, item.longitude);
-        setInput(defaultInput);
+        props.changeCity({ name: item.name, latitude: item.latitude,
+            longitude: item.longitude });
+        setInput("");
         setSearchResult(undefined);
     };
 

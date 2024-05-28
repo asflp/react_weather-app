@@ -1,23 +1,18 @@
 import './DateInfo.css';
 
-interface DateInfoProps {
+interface Props {
     city: string;
     time: string;
     weekDay: string;
     date: string;
 }
 
-export const DateInfo: React.FC<DateInfoProps> = ({
-    city,
-    time,
-    weekDay,
-    date,
-}) => {
+export const DateInfo = (props: Props) => {
     return (
         <div className={'container_date'}>
-            <div className={'today_label__first'}>{city}</div>
-            <div className={'today_label__second'}>{time}</div>
-            <div className={'today_label__third'}>{`${weekDay}, ${date}`}</div>
+            <div className={'today_label__first'}>{props.city}</div>
+            <div className={'today_label__second'}>{props.time}</div>
+            <div className={'today_label__third'}>{`${props.weekDay}, ${props.date}`}</div>
         </div>
     );
 };

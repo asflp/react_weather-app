@@ -1,15 +1,15 @@
 import './HourlyInfo.css';
-import { WeatherIcons } from '../../Icons/WeatherIcons.tsx';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+import { Icon } from '../../icons/Icon.tsx';
+// @ts-ignore
 import navigationImg from './../../assets/navigation.png';
 import { conditionsWeather } from '../../Dictionaries.ts';
+import { ResponseWeather } from '../../App.tsx';
 
-interface HourlyInfoProps {
+interface Props {
     weather?: ResponseWeather;
 }
 
-export const HourlyInfo: React.FC<HourlyInfoProps> = ({ weather }) => {
+export const HourlyInfo = (props: Props) => {
     return (
         <div className={'container_hourly'}>
             <div className={'hourly_label'}>Почасовой прогноз:</div>
@@ -20,16 +20,16 @@ export const HourlyInfo: React.FC<HourlyInfoProps> = ({ weather }) => {
                         <div className={'hourly_info__item__hours'}>
                             {item}:00
                         </div>
-                        <WeatherIcons
+                        <Icon
                             id={
-                                weather?.forecast.forecastday[0].hour[item]
+                                props.weather?.forecast.forecastday[0].hour[item]
                                     .condition.text &&
                                 conditionsWeather.has(
-                                    weather.forecast.forecastday[0].hour[item]
+                                    props.weather.forecast.forecastday[0].hour[item]
                                         .condition.text
                                 )
                                     ? conditionsWeather.get(
-                                          weather.forecast.forecastday[0].hour[
+                                          props.weather.forecast.forecastday[0].hour[
                                               item
                                           ].condition.text
                                       )!
@@ -38,8 +38,8 @@ export const HourlyInfo: React.FC<HourlyInfoProps> = ({ weather }) => {
                             width={50}
                         />
                         <div className={'hourly_info__item__degrees'}>
-                            {weather?.forecast.forecastday[0].hour[item].temp_c
-                                ? weather?.forecast.forecastday[0].hour[item]
+                            {props.weather?.forecast.forecastday[0].hour[item].temp_c
+                                ? props.weather?.forecast.forecastday[0].hour[item]
                                       .temp_c
                                 : '-'}
                             °C
@@ -49,19 +49,19 @@ export const HourlyInfo: React.FC<HourlyInfoProps> = ({ weather }) => {
                             style={{
                                 width: '35px',
                                 rotate: `${
-                                    weather?.forecast.forecastday[0].hour[item]
+                                    props.weather?.forecast.forecastday[0].hour[item]
                                         .wind_degree
-                                        ? weather.forecast.forecastday[0].hour[
+                                        ? props.weather.forecast.forecastday[0].hour[
                                               item
                                           ].wind_degree
                                         : 0
                                 }deg`,
-                            }}
+                            }} alt={""}
                         />
                         <div className={'hourly_info__item__wind_speed'}>
-                            {weather?.forecast.forecastday[0].hour[item]
+                            {props.weather?.forecast.forecastday[0].hour[item]
                                 .wind_kph
-                                ? weather.forecast.forecastday[0].hour[item]
+                                ? props.weather.forecast.forecastday[0].hour[item]
                                       .wind_kph
                                 : '-'}
                             км/ч
